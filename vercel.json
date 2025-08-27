@@ -15,5 +15,6 @@
   "env": {
     "BASE_URL": "https://siri-traders.vercel.app",
     "ENCRYPTION_KEY": "siri-traders-secure-key-2024"
-  }
+  },
+  "name": "siri-traders"
 } 
