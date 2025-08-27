@@ -6,22 +6,22 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "server.js"
+      "source": "/api/(.*)",
+      "destination": "/server.js"
     },
     {
-      "src": "/orders",
-      "dest": "server.js"
+      "source": "/orders",
+      "destination": "/server.js"
     },
     {
-      "src": "/admin",
-      "dest": "server.js"
+      "source": "/admin",
+      "destination": "/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "server.js"
+      "source": "/(.*)",
+      "destination": "/server.js"
     }
   ],
   "env": {
