@@ -502,13 +502,23 @@ app.get('/whatsapp_notification_link.txt', (req, res) => {
     }
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`🌐 SIRI TRADERS App is live at: ${BASE_URL}`);
+// Start server (only if not in Vercel environment)
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+        console.log(`🌐 SIRI TRADERS App is live at: ${BASE_URL}`);
+        console.log(`📱 Customer Orders: ${BASE_URL}/orders`);
+        console.log(`⚙️ Admin Panel: ${BASE_URL}`);
+        
+        // Initialize WhatsApp client
+        initializeWhatsApp();
+    });
+} else {
+    // For Vercel serverless environment
+    console.log(`🌐 SIRI TRADERS App deployed to Vercel`);
     console.log(`📱 Customer Orders: ${BASE_URL}/orders`);
     console.log(`⚙️ Admin Panel: ${BASE_URL}`);
-    
-    // Initialize WhatsApp client
-    initializeWhatsApp();
-}); 
+}
+
+// Export for Vercel
+module.exports = app; 
