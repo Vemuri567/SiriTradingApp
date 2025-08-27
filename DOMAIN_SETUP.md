@@ -1,117 +1,43 @@
-# 🌐 Domain Setup Guide - SIRI TRADERS
+# 🌐 SIRI TRADERS - Custom Domain Setup
 
-## Domain Configuration
+## 🚀 **Current Working URLs:**
+- **Main App:** https://siri-trading-b28sl3ve9-siri-traders.vercel.app/
+- **Customer Orders:** https://siri-trading-b28sl3ve9-siri-traders.vercel.app/orders
+- **Admin Panel:** https://siri-trading-b28sl3ve9-siri-traders.vercel.app/admin
 
-### Primary Domain: `https://siritraders.in`
-### Alternative Domain: `https://siritraders.com`
+## 🔧 **How to Get a Custom Domain:**
 
-## 📱 App URLs Structure
+### **Step 1: Go to Vercel Dashboard**
+1. Visit: https://vercel.com/dashboard
+2. Click on your project `SiriTradingApp`
 
-### Main URLs:
-- **Home/Admin Panel**: `https://siritraders.in`
-- **Customer Orders**: `https://siritraders.in/orders`
-- **API Endpoints**: `https://siritraders.in/api/*`
+### **Step 2: Add Custom Domain**
+1. Go to **"Settings"** tab
+2. Click **"Domains"** in the left sidebar
+3. Click **"Add Domain"**
 
-### URL Structure:
-```
-https://siritraders.in/          → Admin Dashboard
-https://siritraders.in/orders    → Customer Order Page
-https://siritraders.in/api/prices → Price List API
-https://siritraders.in/api/orders → Orders API
-```
+### **Step 3: Choose Domain Option**
+**Option A: Free Vercel Subdomain**
+- Enter: `siri-traders`
+- Vercel will give you: `siri-traders.vercel.app`
 
-## 🔧 Domain Setup Steps
+**Option B: Custom Domain (if you have one)**
+- Enter your domain: `siritraders.com` or `siritraders.in`
 
-### Step 1: Purchase Domain
-1. **GoDaddy**: https://godaddy.com
-2. **Namecheap**: https://namecheap.com
-3. **Google Domains**: https://domains.google
+### **Step 4: Configure DNS**
+- Follow Vercel's DNS instructions
+- Add the required DNS records to your domain provider
 
-### Step 2: DNS Configuration
-Add these DNS records:
+## 📱 **App Features (All Working):**
+✅ **Price List Management**
+✅ **Customer Order Placement**
+✅ **WhatsApp Share Links**
+✅ **Admin Panel**
+✅ **Delivery Calculation**
+✅ **Security Features**
 
-```
-Type: A
-Name: @
-Value: [Your hosting IP]
+## 🎯 **Quick Test:**
+Test your current app at: https://siri-trading-b28sl3ve9-siri-traders.vercel.app/
 
-Type: CNAME
-Name: www
-Value: siritraders.in
-```
-
-### Step 3: SSL Certificate
-- Most hosting providers offer free SSL
-- Enable HTTPS for security
-
-## 🚀 Deployment with Custom Domain
-
-### Railway Deployment:
-1. Deploy to Railway
-2. Go to "Settings" → "Custom Domains"
-3. Add: `siritraders.in`
-4. Update DNS records with Railway's IP
-
-### Environment Variables:
-```
-BASE_URL=https://siritraders.in
-PORT=3000
-```
-
-## 📱 WhatsApp Integration URLs
-
-### Order Notifications:
-- **Shop Owner**: 9963321819
-- **Order URL**: `https://siritraders.in/orders`
-- **Admin Panel**: `https://siritraders.in`
-
-### Price List Sharing:
-- **Direct Link**: `https://siritraders.in/orders`
-- **WhatsApp Share**: Pre-filled with domain URL
-
-## 🔄 URL Updates Made
-
-### Server.js:
-- ✅ Base URL: `https://siritraders.in`
-- ✅ Order page: `/orders`
-- ✅ Console logs updated
-
-### Order.js:
-- ✅ WhatsApp integration with new domain
-- ✅ Order notifications with correct URLs
-
-### Admin Panel:
-- ✅ All links updated to new domain
-- ✅ Price list sharing with correct URLs
-
-## 📊 Benefits of Custom Domain
-
-### Professional Branding:
-- ✅ `https://siritraders.in` looks professional
-- ✅ Easy to remember and share
-- ✅ Builds customer trust
-
-### SEO Benefits:
-- ✅ Better search engine ranking
-- ✅ Local business visibility
-- ✅ Mobile-friendly URLs
-
-### Business Growth:
-- ✅ Scalable for multiple locations
-- ✅ Easy to add subdomains later
-- ✅ Professional email addresses
-
-## 🆘 Support
-
-### Domain Issues:
-- Contact your domain registrar
-- Check DNS propagation (24-48 hours)
-- Verify SSL certificate
-
-### Hosting Issues:
-- Railway support: https://railway.app/support
-- Check deployment logs
-- Verify environment variables
-
----
-**Your SIRI TRADERS app will be live at https://siritraders.in! 🚀** 
+## 💡 **Recommendation:**
+Use the current working URL for now. The app is fully functional and ready for business! 

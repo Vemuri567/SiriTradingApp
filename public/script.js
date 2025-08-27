@@ -30,7 +30,7 @@ function updateCurrentDate() {
 // Load price list from server
 async function loadPriceList() {
     try {
-        const response = await fetch('/api/prices');
+        const response = await fetch('http://localhost:3000/api/prices');
         priceList = await response.json();
         displayPriceList();
         updateStats();
@@ -105,7 +105,7 @@ async function addItem() {
     }
 
     try {
-        const response = await fetch('/api/prices', {
+        const response = await fetch('http://localhost:3000/api/prices', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -353,7 +353,7 @@ async function copyOrderInstructions() {
 // Load orders
 async function loadOrders() {
     try {
-        const response = await fetch('/api/orders');
+        const response = await fetch('http://localhost:3000/api/orders');
         orders = await response.json();
         displayOrders();
     } catch (error) {
@@ -507,7 +507,7 @@ async function saveOrder() {
     const totalAmount = selectedOrderItems.reduce((sum, item) => sum + item.total, 0);
     
     try {
-        const response = await fetch('/api/orders', {
+        const response = await fetch('http://localhost:3000/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
