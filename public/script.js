@@ -222,7 +222,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     formData.append('file', fileInput.files[0]);
 
     try {
-        const response = await fetch('/api/upload', {
+        const response = await fetch('http://localhost:3000/api/upload', {
             method: 'POST',
             body: formData
         });
@@ -243,7 +243,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
 // Check WhatsApp connection status
 async function checkWhatsAppStatus() {
     try {
-        const response = await fetch('/api/whatsapp/qr');
+        const response = await fetch('http://localhost:3000/api/whatsapp/qr');
         const data = await response.json();
         
         const qrSection = document.getElementById('qrSection');
@@ -282,7 +282,7 @@ async function sendPriceList() {
     }
 
     try {
-        const response = await fetch('/api/whatsapp/send', {
+        const response = await fetch('http://localhost:3000/api/whatsapp/send', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -311,42 +311,91 @@ async function copyPriceList() {
     }
 
     try {
-        const response = await fetch('/api/prices/formatted');
-        const data = await response.json();
+        // Create formatted price list message
+        const today = new Date().toLocaleDateString('en-IN', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        let message = `🏪 *SIRI TRADERS - Wholesale Kirana & Groceries*\n`;
+        message += `📅 *Price List - ${today}*\n\n`;
+        message += `🆕 *Fresh Stock Available*\n`;
+        message += `💰 *Best Prices Compared to DMart*\n`;
+        message += `🎯 *Bulk Order Discounts*\n\n`;
+        
+        // Group items by category
+        const groupedItems = priceList.reduce((acc, item) => {
+            if (!acc[item.category]) {
+                acc[item.category] = [];
+            }
+            acc[item.category].push(item);
+            return acc;
+        }, {});
+        
+        Object.keys(groupedItems).forEach(category => {
+            message += `📦 *${category.toUpperCase()}*\n`;
+            groupedItems[category].forEach(item => {
+                message += `• ${item.item}: ₹${item.price}\n`;
+            });
+            message += '\n';
+        });
+        
+        message += `🚚 *Delivery Information:*\n`;
+        message += `• Free delivery within 3km for orders above ₹1000\n`;
+        message += `• Free delivery within 1km for orders above ₹500\n`;
+        message += `• ₹50 delivery fee for other orders\n\n`;
+        message += `📞 *Contact:* +91-9963321819\n`;
+        message += `🌐 *Order Online:* http://localhost:3000/orders\n`;
+        message += `🆕 *Fresh Stock Available*\n`;
+        message += `💰 *Bulk Order Discounts*`;
         
         // Try modern clipboard API first
         if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(data.message);
+            await navigator.clipboard.writeText(message);
             showAlert('Price list copied to clipboard!', 'success');
         } else {
             // Fallback method for older browsers or non-secure contexts
-            fallbackCopyTextToClipboard(data.message);
+            fallbackCopyTextToClipboard(message);
         }
     } catch (error) {
         console.error('Error copying price list:', error);
-        // Fallback method
-        fallbackCopyTextToClipboard(data.message);
+        showAlert('Error copying price list', 'danger');
     }
 }
 
 // Copy order instructions to clipboard
 async function copyOrderInstructions() {
     try {
-        const response = await fetch('/api/order-instructions');
-        const data = await response.json();
+        // Create order instructions message
+        let instructions = `📋 *SIRI TRADERS - How to Place Orders*\n\n`;
+        instructions += `🛒 *Order Process:*\n`;
+        instructions += `1. Visit: http://localhost:3000/orders\n`;
+        instructions += `2. Select items and quantities\n`;
+        instructions += `3. Fill customer details\n`;
+        instructions += `4. Click "Place Order"\n`;
+        instructions += `5. Share location when prompted\n\n`;
+        instructions += `🚚 *Delivery Information:*\n`;
+        instructions += `• Free delivery within 3km for orders above ₹1000\n`;
+        instructions += `• Free delivery within 1km for orders above ₹500\n`;
+        instructions += `• ₹50 delivery fee for other orders\n\n`;
+        instructions += `📞 *Contact:* +91-9963321819\n`;
+        instructions += `🏪 *SIRI TRADERS - Wholesale Kirana & Groceries*\n`;
+        instructions += `🆕 *Fresh Stock Available*\n`;
+        instructions += `💰 *Bulk Order Discounts*`;
         
         // Try modern clipboard API first
         if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(data.instructions);
+            await navigator.clipboard.writeText(instructions);
             showAlert('Order instructions copied to clipboard!', 'success');
         } else {
             // Fallback method for older browsers or non-secure contexts
-            fallbackCopyTextToClipboard(data.instructions);
+            fallbackCopyTextToClipboard(instructions);
         }
     } catch (error) {
         console.error('Error copying order instructions:', error);
-        // Fallback method
-        fallbackCopyTextToClipboard(data.instructions);
+        showAlert('Error copying order instructions', 'danger');
     }
 }
 
