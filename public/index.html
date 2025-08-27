@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirana Shop Price List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+        }
+        .btn-success {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .price-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .category-badge {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        .whatsapp-section {
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .qr-container {
+            text-align: center;
+            padding: 20px;
+        }
+        .qr-code {
+            max-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Header -->
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h1 class="display-4 mb-3">
+                            <i class="fas fa-store text-primary"></i>
+                            SIRI TRADERS
+                        </h1>
+                        <p class="lead text-muted">Wholesale Kirana & Groceries - Best Prices Compared to DMart</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <span class="badge bg-primary">Today: <span id="currentDate"></span></span>
+                            <span class="badge bg-success">Items: <span id="itemCount">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="row">
+                    <!-- Price List Management -->
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-list"></i> Price List</h5>
+                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                                    <i class="fas fa-plus"></i> Add Item
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Price (₹)</th>
+                                                <th>Category</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="priceListTable">
+                                            <!-- Items will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Excel Upload -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-file-excel"></i> Import from Excel</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="uploadForm" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <input type="file" class="form-control" id="excelFile" name="file" accept=".xlsx,.xls" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-success w-100">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <small class="text-muted mt-2 d-block">
+                                    Excel format: Item, Price, Category columns
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Orders Management -->
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-shopping-cart"></i> Customer Orders</h5>
+                                <div>
+                                    <button class="btn btn-warning btn-sm me-2" onclick="openWhatsAppNotification()">
+                                        <i class="fab fa-whatsapp"></i> Send Notification
+                                    </button>
+                                    <button class="btn btn-success btn-sm me-2" onclick="copyLatestOrder()">
+                                        <i class="fas fa-bell"></i> Copy Latest Order
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addOrderModal">
+                                        <i class="fas fa-plus"></i> Add Order
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Order #</th>
+                                                <th>Customer</th>
+                                                <th>Items</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ordersTable">
+                                            <!-- Orders will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WhatsApp Integration -->
+                    <div class="col-lg-4">
+                        <div class="whatsapp-section mb-4">
+                            <h5 class="mb-3">
+                                <i class="fab fa-whatsapp"></i> WhatsApp Integration
+                            </h5>
+                            
+                            <!-- QR Code Section -->
+                            <div id="qrSection" class="qr-container" style="display: none;">
+                                <h6>Scan QR Code to Connect WhatsApp</h6>
+                                <img id="qrCode" class="qr-code" alt="WhatsApp QR Code">
+                                <p class="mt-2 small">Open WhatsApp → Settings → Linked Devices → Link a Device</p>
+                            </div>
+
+                            <!-- Connection Status -->
+                            <div id="connectionStatus" class="text-center">
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Connecting to WhatsApp...</p>
+                            </div>
+
+                            <!-- Send Price List -->
+                            <div id="sendSection" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label">Phone Number (with country code)</label>
+                                    <input type="tel" class="form-control" id="phoneNumber" placeholder="+91XXXXXXXXXX">
+                                </div>
+                                <button class="btn btn-light w-100 mb-2" onclick="sendPriceList()">
+                                    <i class="fab fa-whatsapp"></i> Send Price List
+                                </button>
+                                <button class="btn btn-outline-light w-100" onclick="copyPriceList()">
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                            </div>
+
+                            <!-- Manual Copy Section -->
+                            <div id="manualSection">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <strong>Share Price List</strong><br>
+                                    <small>Copy and paste into WhatsApp</small>
+                                </div>
+                                <button class="btn btn-light w-100 mb-2" onclick="copyPriceList()">
+                                    <i class="fas fa-copy"></i> Copy Price List
+                                </button>
+                                <button class="btn btn-outline-light w-100 mb-2" onclick="copyOrderInstructions()">
+                                    <i class="fas fa-clipboard-list"></i> Copy Order Instructions
+                                </button>
+                                <div class="text-light small">
+                                    <p><strong>How to use:</strong></p>
+                                    <ol class="text-start">
+                                        <li>Click "Copy Price List"</li>
+                                        <li>Open WhatsApp on your phone</li>
+                                        <li>Paste the message</li>
+                                        <li>Send to your customers</li>
+                                        <li>Use "Order Instructions" to show customers how to order</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-chart-bar"></i> Quick Stats</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <h4 id="totalItems">0</h4>
+                                        <small class="text-muted">Total Items</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h4 id="totalValue">₹0</h4>
+                                        <small class="text-muted">Total Value</small>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div id="categoryStats">
+                                    <!-- Category breakdown will be shown here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div class="modal fade" id="addItemModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addItemForm">
+                        <div class="mb-3">
+                            <label class="form-label">Item Name</label>
+                            <input type="text" class="form-control" id="itemName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Price (₹)</label>
+                            <input type="number" class="form-control" id="itemPrice" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-control" id="itemCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="Grains">Grains</option>
+                                <option value="Essentials">Essentials</option>
+                                <option value="Dairy">Dairy</option>
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Bakery">Bakery</option>
+                                <option value="Beverages">Beverages</option>
+                                <option value="Snacks">Snacks</option>
+                                <option value="Personal Care">Personal Care</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addItem()">Add Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="modal fade" id="editItemModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editItemForm">
+                        <input type="hidden" id="editItemId">
+                        <div class="mb-3">
+                            <label class="form-label">Item Name</label>
+                            <input type="text" class="form-control" id="editItemName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Price (₹)</label>
+                            <input type="number" class="form-control" id="editItemPrice" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-control" id="editItemCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="Grains">Grains</option>
+                                <option value="Essentials">Essentials</option>
+                                <option value="Dairy">Dairy</option>
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Bakery">Bakery</option>
+                                <option value="Beverages">Beverages</option>
+                                <option value="Snacks">Snacks</option>
+                                <option value="Personal Care">Personal Care</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateItem()">Update Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Order Modal -->
+    <div class="modal fade" id="addOrderModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addOrderForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Customer Name</label>
+                                    <input type="text" class="form-control" id="customerName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="customerPhone" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Delivery Address</label>
+                            <textarea class="form-control" id="deliveryAddress" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Items</label>
+                            <div id="orderItems">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="itemSelect">
+                                            <option value="">Select Item</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" class="form-control" id="itemQuantity" placeholder="Qty" min="1" value="1">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addOrderItem()">
+                                            <i class="fas fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="selectedItems" class="mt-3">
+                                <!-- Selected items will be shown here -->
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="orderNotes" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Total Amount: ₹<span id="orderTotal">0</span></label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveOrder()">Save Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Order Modal -->
+    <div class="modal fade" id="viewOrderModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="orderDetails">
+                    <!-- Order details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
