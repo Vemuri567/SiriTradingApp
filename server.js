@@ -463,6 +463,15 @@ async function sendWhatsAppNotification(message) {
     }
 }
 
+// Test route for debugging
+app.get('/test', (req, res) => {
+    res.json({ 
+        message: 'SIRI TRADERS API is working!', 
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'development'
+    });
+});
+
 // Serve the main HTML page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
