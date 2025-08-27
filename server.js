@@ -4,7 +4,7 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+const BASE_URL = process.env.BASE_URL || 'https://siritraders.com';
 
 // Middleware
 app.use(cors());
@@ -184,7 +184,7 @@ ${deliveryInfo}
 
 🏪 *SIRI TRADERS*
 *Wholesale Kirana & Groceries*
-📞 *Contact:* +91-XXXXXXXXXX
+📞 *Contact:* +91-9963321819
 🆕 *Fresh Stock Available*
 💰 *Bulk Order Discounts*`;
 

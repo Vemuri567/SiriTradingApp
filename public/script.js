@@ -30,7 +30,7 @@ function updateCurrentDate() {
 // Load price list from server
 async function loadPriceList() {
     try {
-        const response = await fetch('http://localhost:3000/api/prices');
+        const response = await fetch('https://siritraders.com/api/prices');
         priceList = await response.json();
         displayPriceList();
         updateStats();
@@ -105,7 +105,7 @@ async function addItem() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/prices', {
+        const response = await fetch('https://siritraders.com/api/prices', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -222,7 +222,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     formData.append('file', fileInput.files[0]);
 
     try {
-        const response = await fetch('http://localhost:3000/api/upload', {
+        const response = await fetch('https://siritraders.com/api/upload', {
             method: 'POST',
             body: formData
         });
@@ -243,7 +243,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
 // Check WhatsApp connection status
 async function checkWhatsAppStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/whatsapp/qr');
+        const response = await fetch('https://siritraders.com/api/whatsapp/qr');
         const data = await response.json();
         
         const qrSection = document.getElementById('qrSection');
@@ -282,7 +282,7 @@ async function sendPriceList() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/whatsapp/send', {
+        const response = await fetch('https://siritraders.com/api/whatsapp/send', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -347,7 +347,7 @@ async function copyPriceList() {
         message += `• Free delivery within 1km for orders above ₹500\n`;
         message += `• ₹50 delivery fee for other orders\n\n`;
         message += `📞 *Contact:* +91-9963321819\n`;
-        message += `🌐 *Order Online:* http://localhost:3000/orders\n`;
+        message += `🌐 *Order Online:* https://siritraders.com/orders\n`;
         message += `🆕 *Fresh Stock Available*\n`;
         message += `💰 *Bulk Order Discounts*`;
         
@@ -371,7 +371,7 @@ async function copyOrderInstructions() {
         // Create order instructions message
         let instructions = `📋 *SIRI TRADERS - How to Place Orders*\n\n`;
         instructions += `🛒 *Order Process:*\n`;
-        instructions += `1. Visit: http://localhost:3000/orders\n`;
+        instructions += `1. Visit: https://siritraders.com/orders\n`;
         instructions += `2. Select items and quantities\n`;
         instructions += `3. Fill customer details\n`;
         instructions += `4. Click "Place Order"\n`;
@@ -402,7 +402,7 @@ async function copyOrderInstructions() {
 // Load orders
 async function loadOrders() {
     try {
-        const response = await fetch('http://localhost:3000/api/orders');
+        const response = await fetch('https://siritraders.com/api/orders');
         orders = await response.json();
         displayOrders();
     } catch (error) {
@@ -556,7 +556,7 @@ async function saveOrder() {
     const totalAmount = selectedOrderItems.reduce((sum, item) => sum + item.total, 0);
     
     try {
-        const response = await fetch('http://localhost:3000/api/orders', {
+        const response = await fetch('https://siritraders.com/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

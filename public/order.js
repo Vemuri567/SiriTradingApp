@@ -32,7 +32,7 @@ function updateCurrentDate() {
 // Load price list from server
 async function loadPriceList() {
     try {
-        const response = await fetch('http://localhost:3000/api/prices');
+        const response = await fetch('https://siritraders.com/api/prices');
         priceList = await response.json();
         displayItems();
     } catch (error) {
@@ -395,7 +395,7 @@ async function placeOrder() {
     };
     
     try {
-        const response = await fetch('http://localhost:3000/api/orders', {
+        const response = await fetch('https://siritraders.com/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
