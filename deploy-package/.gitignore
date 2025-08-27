@@ -1,0 +1,9 @@
+node_modules/
+.env
+.wwebjs_auth/
+uploads/
+*.log
+latest_order.txt
+whatsapp_notification_link.txt
+.DS_Store
+Thumbs.db 
